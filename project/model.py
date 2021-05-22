@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import Flatten, Dense, Lambda, Convolution2D, MaxPooling2D, Cropping2D
+from keras.layers import Flatten, Dense, Lambda, Convolution2D, MaxPooling2D, Cropping2D, Dropout
 
 
 def get_model():
@@ -13,7 +13,9 @@ def get_model():
     model.add(MaxPooling2D())
     model.add(Flatten())
     model.add(Dense(120))
-    model.add(Dense(84))
+    model.add(Dropout(.1))
+    model.add(Dense(80))
+    model.add(Dense(40))
     model.add(Dense(1))
     
     model.compile(loss='mse', optimizer='adam')

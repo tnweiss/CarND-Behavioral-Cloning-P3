@@ -56,8 +56,14 @@ def load_batch_generator(X_data, Y_data, batch_size=32):
             for x, y in zip(batch_x, batch_y):
                 image = cv2.imread(x)
                 angle = float(y)
+                
+                # load normal
                 images.append(image)
                 angles.append(angle)
+                
+                # load flipped
+                images.append(cv2.flip(image, flipCode=1))
+                angles.append(angle * -1)
 
             # trim image to only see section with road
             X_train = np.array(images)
