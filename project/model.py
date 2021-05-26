@@ -3,21 +3,24 @@ from keras.layers import Flatten, Dense, Lambda, Convolution2D, MaxPooling2D, Cr
 
 
 def get_model():
-    print("Initializing Model...", end='')
     model = Sequential()
-    model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
+    model.add(Cropping2D(cropping=((65,25), (0,0)), input_shape=(160,320,3)))
     model.add(Lambda(lambda x: (x / 255.0) - 0.5))
-    model.add(Convolution2D(6, 5, 5, activation='relu'))
-    model.add(MaxPooling2D())
-    model.add(Convolution2D(6, 5, 5, activation='relu'))
-    model.add(MaxPooling2D())
+    
+    model.add(Convolution2D(24, 5, 5, subsample=(2,2), activation='relu'))
+    model.add(Convolution2D(36, 5, 5, subsample=(2,2), activation='relu'))
+    model.add(Convolution2D(48, 5, 5, subsample=(2,2), activation='relu'))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
+    model.add(Convolution2D(64, 3, 3, activation='relu'))
     model.add(Flatten())
-    model.add(Dense(120))
+    
     model.add(Dropout(.1))
-    model.add(Dense(80))
-    model.add(Dense(40))
+    
+    model.add(Dense(100))
+    model.add(Dense(50))
+    model.add(Dense(10))
     model.add(Dense(1))
     
     model.compile(loss='mse', optimizer='adam')
-    print("Done")
+    
     return model

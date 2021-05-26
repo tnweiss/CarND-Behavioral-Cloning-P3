@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 DATA_DIR = 'data'
 LOG_FILE = 'data/driving_log.csv'
-BATCH_SIZE = 35
+BATCH_SIZE = 35.0
 HISTORY_PICKLE = 'lossHistory.pkl'
 MODEL_OUTPUT = 'model.h5'
 
@@ -32,7 +32,7 @@ def model():
             steps_per_epoch=ceil(len(X_train)/BATCH_SIZE),
             validation_data=valid_gen,
             validation_steps=ceil(len(X_valid)/BATCH_SIZE),
-            epochs=5, verbose=1)
+            epochs=4, verbose=1)
     
     # pickle the loss object
     pickle.dump(history_object, open(HISTORY_PICKLE, 'wb'))
