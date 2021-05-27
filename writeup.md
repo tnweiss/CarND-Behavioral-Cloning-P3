@@ -76,6 +76,10 @@ I decided to use a 80/20 split for training/validation sets. As seen before I al
 X_train, X_valid, Y_train, Y_valid = train_test_split(X, Y, test_size=0.2)
 ```
 
+This graph shows the proportional decrease in loss, helping assure we are not overfitting
+
+[Training Loss](TrainingLoss.png)
+
 ### Have the model parameters been tuned appropriately?
 
 <b> Learning rate parameters are chosen with explanation, or an Adam optimizer is used. </b>
@@ -102,22 +106,45 @@ I collected the following data for my model
 
 <b> The README thoroughly discusses the approach taken for deriving and designing a model architecture fit for solving the given problem. </b>
 
-?????
+Our network architecture was based on NVIDIA's Autonomous Car Groups architecture documented here - https://developer.nvidia.com/blog/deep-learning-self-driving-cars.
+Our customization was the data supplied and the augmentations that allow the model to flourish.
 
 ### Is the model architecture documented?
 
 <b> The README provides sufficient details of the characteristics and qualities of the architecture, such as the type of model used, the number of layers, the size of each layer. Visualizations emphasizing particular qualities of the architecture are encouraged. </b>
 
-??????
+As stated before, the network architecture was a copy of NVIDIA's Autonomous Car Groups architecture. This architecture is visualized below
+
+[](https://developer.nvidia.com/blog/parallelforall/wp-content/uploads/2016/08/cnn-architecture-624x890.png)
 
 ### Is the creation of the training dataset and training process documented?
 
 <b> The README describes how the model was trained and what the characteristics of the dataset are. Information such as how the dataset was generated and examples of images from the dataset must be included. </b>
 
-???????
+In data/driving_log.csv we can see rows such as 
+
+```
+center,left,right,steering,throttle,brake,speed
+IMG/center_2016_12_01_13_30_48_287.jpg, IMG/left_2016_12_01_13_30_48_287.jpg, IMG/right_2016_12_01_13_30_48_287.jpg, 0, 0, 0, 22.14829
+IMG/center_2016_12_01_13_30_48_404.jpg, IMG/left_2016_12_01_13_30_48_404.jpg, IMG/right_2016_12_01_13_30_48_404.jpg, 0, 0, 0, 21.87963
+```
+
+My script takes the 3 images in each row and appends it to a list of known data sets. I don't load the data set until i need it to reduce memory consumption. Below is an example of 
+`center_2016_12_01_13_30_48_287.jpg`
+
+[](center_2016_12_01_13_30_48_287.jpg)
+
+I then add the 4th element to a list of steering measurements pertaining to the expected steering angle given that image.
+
+When it comes time to load the images i load the original image, then i take that image and flip the image horizontally and flip its measurement to extend the data set.
+
+```python
+images.append(cv2.flip(image, 1))
+angles.append(angle * -1)
+```
 
 ### Is the car able to navigate correctly on test data?
 
 <b> No tire may leave the drivable portion of the track surface. The car may not pop up onto ledges or roll over any surfaces that would otherwise be considered unsafe (if humans were in the vehicle). </b>
 
-???????
+Yes, `video.mp4` shows an autonomous run around the track where the tires do not leave the track. 
